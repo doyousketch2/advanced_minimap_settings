@@ -1,7 +1,7 @@
 # minimap_gui
 GUI for Minetest minimap  
 
-Type .m or .map to access GUI.  
+Type **.m** or **.map** to access GUI.  
 
 **code cleanup:**  
 - [x] removed unused register_globalstep() function  
@@ -11,3 +11,5 @@ Type .m or .map to access GUI.
 - [x] closing comments  
 - [x] better spacing  
 - [x] GNU - AGPL  
+
+Mostly done as an excercise to learn Minetest client-side mods.
