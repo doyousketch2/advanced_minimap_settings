@@ -12,4 +12,4 @@ Type **.m** or **.map** to access GUI.
 - [x] better spacing  
 - [x] GNU - AGPL  
 
-Mostly done as an excercise to learn Minetest client-side mods.
+Mostly done as an excercise so I can learn Minetest client-side mods.
