@@ -14,4 +14,4 @@ Mostly done as an excercise so I can learn Minetest client-side mods.
 - [x] descriptive comments  
 - [x] closing comments  
 - [x] better spacing  
-- [x] GNU - AGPL  
+- [x] GNU - AGPL v3  
