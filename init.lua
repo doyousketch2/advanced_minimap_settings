@@ -125,7 +125,7 @@ minetest .register_on_formspec_input(
 
 			  mod_storage :set_int( 'shape', shape )
 			  minetest .ui .minimap :set_shape( shape )
-		  end -- if fields...
+		  end  -- if fields...
 
 	  end  -- formname
   end  -- function(formname, fields)
