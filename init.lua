@@ -66,7 +66,7 @@ function show_minimap_formspec()  -- Note: don't use spacing in formspec paramet
 	minetest .show_formspec( 'map_gui', 
 		'size[6,4]'..  'bgcolor[#030015]'..
 
-		'label[0.6,0;Minimap GUI]'..
+		'label[1,0;Minimap GUI]'..
 		'button_exit[5.2,-0.15;1.0,0.7;close;×]'..
 
 		-- visible?
