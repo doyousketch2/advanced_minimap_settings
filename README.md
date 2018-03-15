@@ -1,4 +1,13 @@
-# advanced_minimap_settings
-An advanced hud for minetest
+# minimap_gui
+GUI for Minetest minimap  
 
-type .mapsettings to access gui
+Type .m or .map to access GUI.  
+
+**code cleanup:**  
+- [x] removed unused register_globalstep() function  
+- [x] merged separate register_on_connect() functions  
+- [x] refactored large *elseif* code blocks  
+- [x] descriptive comments  
+- [x] closing comments  
+- [x] better spacing  
+- [x] GNU - AGPL  
