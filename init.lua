@@ -1,137 +1,134 @@
---0 off 1-3 surface 4-6 radar
+--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-
-----LOADING
-local mod_storage = minetest.get_mod_storage()
-
-
-
-
-if mod_storage:get_string("show") == "" then
-	mod_storage:set_string("show", "true")
-end
-
-
-
-
---avoid opengl errors by delay
-minetest.register_on_connect(function()
-	
-	minetest.after(1, function()
-		if mod_storage:get_string("show") == "true" then
-			minetest.ui.minimap:show()
-			minetest.ui.minimap:set_mode(mod_storage:get_int("set_mode"))
-			minetest.ui.minimap:set_shape(mod_storage:get_int("set_shape"))
-		end
-		--show_minimap_form_spec()
-	end)
-	
-end)
-
-------
-
-
-
-
----MODIFYING
-
-
-minetest.register_chatcommand("mapsettings", {
-	description = "Modify minimap settings",
-	func = function()
-		print("test")
-		show_minimap_form_spec()
-end})
-
-function show_minimap_form_spec()
-	minetest.show_formspec("hud_settings", 
-		"size[6,6]" ..
-		
-		"bgcolor[#000000;false]" ..
-		
-		"button_exit[5.2,-0.15;1,0.7;close;×]" ..
-		
-		"label[0.6,0;Advanced Minimap Settings]" ..
-		
-		
-		--visible setting
-		"label[0.1,1.1;Map_Visible]" ..
-		"dropdown[2.1,1;1.25;Map_Visible;true,false;1]"..
-		
-		--mode setting- surface & radar
-		"label[0.1,2.1;Map_Mode]" ..
-		"dropdown[2.1,2;2.25;Map_Mode;Surface X1,Surface X2,Surface X4,Radar X1,Radar X2,Radar X4;1]"..
-		
-		--map shape
-		"label[0.1,3.1;Map_Shape]" ..
-		"dropdown[2.1,3;1.75;Map_Shape;Square,Round;1]"
-		
-		
-		--"button[3.75,5.5;2.5,1;Save_And_Apply;Save & Apply]"
-	)
-end
-
---recieve fields
-minetest.register_on_formspec_input(function(formname, fields)
-	if formname == "hud_settings" and not fields.quit then
-	
-		if fields.Map_Visible then
-			print(fields.Map_Visible)
-			if fields.Map_Visible == "true" then
-				minetest.ui.minimap:show()
-				mod_storage:set_string("show", "true")
-			elseif fields.Map_Visible == "false" then
-				minetest.ui.minimap:hide()
-				mod_storage:set_string("show", "false")
-			end
-		end
-		if fields.Map_Mode then
-			if fields.Map_Mode == "Surface X1" then
-				mod_storage:set_int("set_mode", 1)
-				minetest.ui.minimap:set_mode(1)
-			elseif fields.Map_Mode == "Surface X2" then
-				mod_storage:set_int("set_mode", 2)
-				minetest.ui.minimap:set_mode(2)
-			elseif fields.Map_Mode == "Surface X4" then
-				mod_storage:set_int("set_mode", 3)
-				minetest.ui.minimap:set_mode(3)
-			elseif fields.Map_Mode == "Radar X1" then
-				mod_storage:set_int("set_mode", 4)
-				minetest.ui.minimap:set_mode(4)
-			elseif fields.Map_Mode == "Radar X2" then
-				mod_storage:set_int("set_mode", 5)
-				minetest.ui.minimap:set_mode(5)
-			elseif fields.Map_Mode == "Radar X4" then
-				mod_storage:set_int("set_mode", 6)
-				minetest.ui.minimap:set_mode(6)
-			end
-		end
-		if fields.Map_Shape then
-			if fields.Map_Shape == "Square" then
-				minetest.ui.minimap:set_shape(0)
-				mod_storage:set_int("set_shape", 0)
-			elseif fields.Map_Shape == "Round" then
-				minetest.ui.minimap:set_shape(1)
-				mod_storage:set_int("set_shape", 1)
-			end
-		end
-	
-	
-	end
-end)
-
-
----
+print('minimap_gui loading')
 
 local localplayer
-minetest.register_on_connect(function()
-        localplayer = minetest.localplayer
-end)
+local mod_storage  = minetest .get_mod_storage()
 
-minetest.register_globalstep(function(dtime)
-	 
-	if localplayer then
-		--print(localplayer:get_key_pressed())
-	end
+if mod_storage :get_string('show') == '' then
+	mod_storage :set_string('show', 'true')
+end  -- if show()
 
-end)
+--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+minetest .register_on_connect(
+  function()
+
+	  minetest .after( 1,  -- delay a moment for Minetest to initialize player
+	    function()
+
+        localplayer  = minetest .localplayer
+        local M1  = minetest .colorize('#BBBBBB', 'minimap_gui loaded, type ')
+        local M2  = minetest .colorize('#FFFFFF', '.m ')
+        local M3  = minetest .colorize('#BBBBBB', 'or ')
+        local M4  = minetest .colorize('#FFFFFF', '.map ')
+        local M5  = minetest .colorize('#BBBBBB', 'to view.')
+        minetest .display_chat_message( M1..M2..M3..M4..M5 )
+      
+		    if mod_storage :get_string('show') == 'true' then  -- show minimap
+			    minetest .ui .minimap :show()
+			    minetest .ui .minimap :set_mode( mod_storage :get_int('mode'))
+			    minetest .ui .minimap :set_shape( mod_storage :get_int('shape'))
+          print('minimap_gui enabled')
+		    end  -- if show
+
+	    end  -- function()
+	  )  -- .after()
+
+  end  -- function()
+)  -- .register_on_connect()
+
+--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+minetest .register_chatcommand( 'm',
+  {
+	  description  = 'Minimap GUI',
+	  func  = function()
+		  show_minimap_formspec()
+    end  -- function()
+
+  }  -- specifications
+)  -- register_chatcommand
+
+minetest .register_chatcommand( 'map',
+  {
+	  description  = 'Minimap GUI',
+	  func  = function()
+		  show_minimap_formspec()
+    end  -- function()
+
+  }  -- specifications
+)  -- register_chatcommand
+
+--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+function show_minimap_formspec()  -- Note: don't use spacing in formspec parameters...
+	minetest .show_formspec( 'map_gui', 
+		'size[6,4]'..  'bgcolor[#030015]'..
+
+		'label[0.6,0;Minimap GUI]'..
+		'button_exit[5.2,-0.15;1.0,0.7;close;×]'..
+
+		-- visible?
+		'label[0.1,1.1;Map_Visible]'..
+		'dropdown[2.5,1;2.0;Map_Visible;true,false;1]'..
+
+		-- mode - surface or radar
+		'label[0.1,2.1;Map_Mode]'..
+		'dropdown[2.5,2;3.0;Map_Mode;Surface X1,Surface X2,Surface X4,Radar X1,Radar X2,Radar X4;3]'..
+
+		-- map shape
+		'label[0.1,3.1;Map_Shape]'..
+		'dropdown[2.5,3;2.0;Map_Shape;Square,Round;2]'
+
+	)  -- show_formspec()
+end  -- function show_minimap_formspec()
+
+--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+minetest .register_on_formspec_input(
+  function(formname, fields)
+	  if formname == 'map_gui' and not fields .quit then
+      --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		  if fields .Map_Visible then
+		    if fields .Map_Visible == 'true' then
+			    mod_storage :set_string('show', 'true')
+			    minetest .ui .minimap :show()
+			    minetest .ui .minimap :set_mode( mod_storage :get_int('mode'))
+			    minetest .ui .minimap :set_shape( mod_storage :get_int('shape'))
+
+		    elseif fields .Map_Visible == 'false' then
+			    mod_storage :set_string( 'show', 'false' )
+			    minetest .ui .minimap :hide()
+		    end  -- .Map_Visible == 'true'
+      --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		  elseif fields .Map_Mode then
+
+		    local mode
+			  if     fields .Map_Mode == 'Surface X1' then  mode = 1
+			  elseif fields .Map_Mode == 'Surface X2' then  mode = 2
+			  elseif fields .Map_Mode == 'Surface X4' then  mode = 3
+			  elseif fields .Map_Mode == 'Radar X1' then  mode = 4
+			  elseif fields .Map_Mode == 'Radar X2' then  mode = 5
+			  else                                        mode = 6  -- Radar X4
+			  end  -- mode
+
+				mod_storage :set_int( 'mode', mode )
+				minetest .ui .minimap :set_mode( mode )
+      --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		  elseif fields .Map_Shape then
+
+		    local shape
+		    if     fields .Map_Shape == 'Square' then  shape = 0
+		    elseif fields .Map_Shape == 'Round' then  shape = 1
+		    end  -- .Map_Shape
+
+			  mod_storage :set_int( 'shape', shape )
+			  minetest .ui .minimap :set_shape( shape )
+		  end -- if fields...
+
+	  end  -- formname
+  end  -- function(formname, fields)
+)  -- register_on_formspec_input
+
+--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
