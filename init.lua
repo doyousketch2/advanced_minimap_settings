@@ -1,8 +1,6 @@
 --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 print('minimap_gui loading')
-
-local localplayer
 local mod_storage  = minetest .get_mod_storage()
 
 if mod_storage :get_string('show') == '' then
@@ -17,14 +15,13 @@ minetest .register_on_connect(
 	  minetest .after( 1,  -- delay a moment for Minetest to initialize player
 	    function()
 
-        localplayer  = minetest .localplayer
         local M1  = minetest .colorize('#BBBBBB', 'minimap_gui loaded, type ')
         local M2  = minetest .colorize('#FFFFFF', '.m ')
         local M3  = minetest .colorize('#BBBBBB', 'or ')
         local M4  = minetest .colorize('#FFFFFF', '.map ')
         local M5  = minetest .colorize('#BBBBBB', 'to view.')
         minetest .display_chat_message( M1..M2..M3..M4..M5 )
-      
+
 		    if mod_storage :get_string('show') == 'true' then  -- show minimap
 			    minetest .ui .minimap :show()
 			    minetest .ui .minimap :set_mode( mod_storage :get_int('mode'))
